@@ -16,11 +16,17 @@ class CxfGrailsPlugin {
     def artefacts = GrailsCxfUtils.configuredArtefacts()
 
     def doWithSpring = {
+        GrailsCxfUtils.setHasSpringSecurityPlugin(manager)
+
         EndpointBeanConfiguration bc = new EndpointBeanConfiguration(application)
 
         with bc.cxfBeans()
         with bc.endpointBeans()
         with bc.factoryBeans()
+
+        if(manager.hasGrailsPlugin('springSecurityCore')) {
+            with bc.securityInterceptors()
+        }
     }
 
     def doWithApplicationContext = { applicationContext ->
@@ -68,9 +74,9 @@ class CxfGrailsPlugin {
     def issueManagement = [system: 'JIRA', url: '']
     def scm = [url: '']
 
-    def loadAfter = ['hibernate']                   // TODO: Is hibernate really necessary?
-    def observe = ['hibernate']                     // Maybe in the future we add some logging domain class?
-    def dependsOn = [hibernate: '1.3.7 > *']        // But really right now who cares?
+    def loadAfter = ['hibernate', 'springSecurityCore']
+    def observe = []
+    def dependsOn = [:]
 
     def pluginExcludes = [
             'grails-app/conf/hibernate',

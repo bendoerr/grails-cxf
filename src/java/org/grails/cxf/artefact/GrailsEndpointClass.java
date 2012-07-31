@@ -13,6 +13,7 @@ public interface GrailsEndpointClass {
     public static final String PROP_SERVLET_NAME = "servletName";
     public static final String PROP_WSDL         = "wsdl";
     public static final String PROP_SOAP12       = "soap12";
+    public static final String PROP_ENABLE_SS    = "enableSpringSecurity";
 
     public static final Set<String> DEFAULT_GROOVY_EXCLUDES =
             Collections.unmodifiableSet(
@@ -86,5 +87,11 @@ public interface GrailsEndpointClass {
      *  @return if the Cxf Service should generate and use a Soap 1.2 binding.
      */
     Boolean isSoap12();
+
+
+    /**
+     *
+     */
+    Boolean isSpringSecurityEnabled();
 
 }

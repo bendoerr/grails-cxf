@@ -1,16 +1,20 @@
 package org.grails.cxf.utils
 
 import org.grails.cxf.artefact.EndpointArtefactHandler
+import org.codehaus.groovy.grails.plugins.GrailsPluginManager
 
 /**
  *
  */
 class GrailsCxfUtils {
 
-    static final String CFG_LOAD_ON_STARTUP  = 'servlet.loadOnStartup'
-    static final String CFG_DEFAULT_SERVLET  = 'servlet.defaultServlet'
-    static final String CFG_SERVLET_MAPPINGS = 'servlets'
-    static final String CFG_ENDPOINT_SOAP12  = 'endpoint.soap12Binding'
+    static final String CFG_LOAD_ON_STARTUP     = 'servlet.loadOnStartup'
+    static final String CFG_DEFAULT_SERVLET     = 'servlet.defaultServlet'
+    static final String CFG_SERVLET_MAPPINGS    = 'servlets'
+    static final String CFG_ENDPOINT_SOAP12     = 'endpoint.soap12Binding'
+    static final String CFG_ENDPOINT_SSECURITY  = 'endpoint.springSecurityIntegration'
+
+    private static Boolean HAS_SPRING_SECURITY_PLUGIN = false
 
     private GrailsCxfUtils() {
         // Class contains static methods only
@@ -55,6 +59,19 @@ class GrailsCxfUtils {
     static Boolean getDefaultSoap12Binding() {
         return getConfig(CFG_ENDPOINT_SOAP12)
     }
+
+    static Boolean getDefaultEndpointSSecurity() {
+        return getConfig(CFG_ENDPOINT_SSECURITY)
+    }
+
+    static Boolean isSpringSecurityIntegrationEnabled() {
+        return HAS_SPRING_SECURITY_PLUGIN
+    }
+
+    static void setHasSpringSecurityPlugin(GrailsPluginManager manager) {
+        HAS_SPRING_SECURITY_PLUGIN = manager.hasGrailsPlugin('springSecurityCore')
+    }
+
 
     static List configuredArtefacts() {
         return [EndpointArtefactHandler]

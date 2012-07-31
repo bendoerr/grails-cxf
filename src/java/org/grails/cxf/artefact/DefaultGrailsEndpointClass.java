@@ -25,6 +25,7 @@ public class DefaultGrailsEndpointClass extends AbstractInjectableGrailsClass im
     protected String servletName;
     protected URL wsdl;
     protected Boolean soap12;
+    protected Boolean springSecurityEnabled;
 
     private static final Log log = LogFactory.getLog(DefaultGrailsEndpointClass.class);
 
@@ -35,6 +36,7 @@ public class DefaultGrailsEndpointClass extends AbstractInjectableGrailsClass im
         setupServletName();
         findWsdl();
         setupSoap12Binding();
+        setupSpringSecurityEnabled();
     }
 
     /**
@@ -103,8 +105,20 @@ public class DefaultGrailsEndpointClass extends AbstractInjectableGrailsClass im
         return StringUtils.removeEnd(getPropertyName(), EndpointArtefactHandler.TYPE);
     }
 
+    /**
+     *
+     * @return
+     */
     public Boolean isSoap12() {
         return soap12;
+    }
+
+    /**
+     *
+     *
+     */
+    public Boolean isSpringSecurityEnabled() {
+        return springSecurityEnabled;
     }
 
     protected void setupExposeAs() {
@@ -187,4 +201,19 @@ public class DefaultGrailsEndpointClass extends AbstractInjectableGrailsClass im
             soap12 = soap12setting;
         }
     }
+
+
+    protected void setupSpringSecurityEnabled() {
+        if (GrailsCxfUtils.isSpringSecurityIntegrationEnabled()) {
+            springSecurityEnabled = GrailsCxfUtils.getDefaultEndpointSSecurity();
+
+            Boolean ssEnabledSetting = (Boolean) getPropertyOrStaticPropertyOrFieldValue(PROP_ENABLE_SS, Boolean.class);
+            if (ssEnabledSetting != null) {
+                springSecurityEnabled = ssEnabledSetting;
+            }
+        } else {
+            springSecurityEnabled = false;
+        }
+    }
+
 }

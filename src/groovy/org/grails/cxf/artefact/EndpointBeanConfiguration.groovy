@@ -2,9 +2,14 @@ package org.grails.cxf.artefact
 
 import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
+import org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor
+import org.apache.ws.security.WSConstants
+import org.apache.ws.security.handler.WSHandlerConstants
 import org.codehaus.groovy.grails.commons.GrailsApplication
+import org.springframework.ws.soap.security.xwss.callback.SpringDigestPasswordValidationCallbackHandler
 
 import javax.xml.ws.soap.SOAPBinding
+import org.grails.cxf.wssecurity.SpringDigestPasswordValidationCallbackHandler
 
 /**
  * Various spring DSL definitions for the Cxf Endpoints.
@@ -93,6 +98,28 @@ class EndpointBeanConfiguration {
                         "\n\tServer Factory - Wsdl Location:      $endpointWsdlLocation" +
                         "\n\tServer Factory - Soap 1.2 Binding:   $endpointUseSoap12" +
                         "\n"
+            }
+        }
+    }
+
+    Closure securityInterceptors() {
+        return {
+            springDigestPasswordValidationCallbackHandler(SpringDigestPasswordValidationCallbackHandler) {
+                userDetailsService = ref('userDetailsService')
+            }
+
+            eachEndpointArtefact {DefaultGrailsEndpointClass endpointArtefact->
+                if (endpointArtefact.springSecurityEnabled) {
+                    String endpointName = endpointArtefact.propertyName
+
+                    "${endpointName}WSS4JInInterceptor"(WSS4JInInterceptor) {
+                        properties = [
+                                (WSHandlerConstants.ACTION): WSHandlerConstants.USERNAME_TOKEN,
+                                (WSHandlerConstants.PASSWORD_TYPE): WSConstants.PW_DIGEST,
+                                (WSHandlerConstants.PW_CALLBACK_REF): ref('springDigestPasswordValidationCallbackHandler')
+                        ]
+                    }
+                }
             }
         }
     }

@@ -4,18 +4,19 @@
   <title>CXF Server and Client plug-in for Grails</title>
   <documentation>http://grails.org/plugin/cxf</documentation>
   <resources>
+    <resource>BootStrap</resource>
     <resource>BuildConfig</resource>
     <resource>Config</resource>
     <resource>DataSource</resource>
     <resource>DefaultCxfConfig</resource>
     <resource>UrlMappings</resource>
-    <resource>test.TestCxfEndpoint</resource>
-    <resource>test.TestJaxwsEndpoint</resource>
-    <resource>test.TestService</resource>
-    <resource>test.TestingEndpoint</resource>
+    <resource>spring.resources</resource>
+    <resource>org.grails.cxf.test.BookStoreEndpoint</resource>
+    <resource>org.grails.cxf.test.BookStoreService</resource>
+    <resource>org.grails.cxf.test.CoffeeMakerEndpoint</resource>
+    <resource>org.grails.cxf.test.CustomerServiceEndpoint</resource>
+    <resource>org.grails.cxf.test.CustomerServiceWsdlEndpoint</resource>
   </resources>
-  <dependencies>
-    <plugin name='hibernate' version='1.3.7 &gt; *' />
-  </dependencies>
+  <dependencies />
   <behavior />
 </plugin>

@@ -46,5 +46,10 @@ cxf {
          * {@code static soap12 = true}.
          */
         soap12Binding = false
+
+        /**
+         *
+         */
+        springSecurityIntegration = false
     }
 }

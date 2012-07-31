@@ -23,6 +23,10 @@ grails.project.dependency.resolution = {
         grailsHome()
         grailsCentral()
         mavenCentral()
+        ebr()
+
+        // For the spring-ws dependencies
+        mavenRepo "http://repository.jboss.org/nexus/content/groups/public-jboss"
     }
 
     dependencies {
@@ -53,10 +57,27 @@ grails.project.dependency.resolution = {
                 group: cxfGroup,
                 excludeConflicting
 
-        compile name: 'cxf-rt-frontend-jaxrs',
+        compile name: 'cxf-rt-frontend-jaxrs',  // I am thinking I want to drop
+                version: cxfVersion,            // this. Not so useful for me.
+                group: cxfGroup,                //
+                excludeConflicting              //
+
+        compile name: 'cxf-rt-ws-security',
                 version: cxfVersion,
                 group: cxfGroup,
                 excludeConflicting
+
+        // Making use of the SpringDigestPasswordValidationCallbackHandler
+        // when Spring security integration is enabled.
+//        compile name: 'spring-ws-security',
+//                version: '2.1.0.RELEASE',
+//                group: 'org.springframework.ws', {
+//                    excludes 'wss4j' //, 'wsit-rt', 'xws-security'
+//                }
+
+        compile('org.springframework.security:org.springframework.security.core:3.0.4.RELEASE') {
+            transitive = false
+        }
 
         /* Some Testing Help **************************************************/
         test    name: 'groovy-wslite',
